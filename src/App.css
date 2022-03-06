@@ -1,38 +1,50 @@
-.App {
-  text-align: center;
+.item {
+  width: 180px;
+  margin: 5px auto;
+  position: relative;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.delete{
+  right: -6px;
+  top: -6px;
+  position: absolute;
+  background: #ff8181eb;
+  border-radius: 50%;
+  width: 20px;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.col {
+  flex-grow: 1;
+  width: 200px;
+  height: 100%;
+  margin: 0 20px;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
-
-.App-link {
-  color: #61dafb;
+#col-STATUS_TODO{
+  background: #EEDCDC;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#col-STATUS_DOING{
+  background: #9CD28E;
+}
+#col-STATUS_DONE{
+  background: #ddd;
+}
+.col-header {
+  line-height: 30px;
+  text-align: center;
+  border-bottom: #ffffff 10px solid;
+}
+.col-main {
+  overflow: auto;
+  padding-top: 20px;
+  flex-grow: 1;
+}
+.col-main.active {
+  background: #0077ff;
+  opacity: 0.1;
+}
+.task-wrapper {
+  display: flex;
+  height: 400px;
+  width: 800px;
 }
