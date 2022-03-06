@@ -9,6 +9,7 @@ const STATUS_CODE = {
   STATUS_DOING: 'Learming...',
   STATUS_DONE: 'Complete'
 }
+//初始数据
 let taskList = [{
   id: 1,
   status: STATUS_TODO,
@@ -16,11 +17,15 @@ let taskList = [{
 }]
 
 function TaskItem(props) {
+  // 是否显示删除图标
   const [isDelete,getIsDelete]=useState(true)
   
+  //点击拖拽组件,获取id
   function handleDragStart() {
     props.onDragStart(props.id);
   }
+
+  //改变输入框的值
   function changeText(e){
     console.log(props)
     let data=[]
@@ -33,6 +38,8 @@ function TaskItem(props) {
     })
     props.getTasks(data)
   }
+
+  //显示关闭删除图标
   function deleteIcon(){
     getIsDelete(!isDelete)
   }
@@ -41,38 +48,42 @@ function TaskItem(props) {
     <div
       onDragStart={handleDragStart}
       onDragEnd={onDragEnd}
-      id={`item-${id}`}
       onMouseOver ={deleteIcon}
       onMouseOut={deleteIcon}
-      className={'item' + (active ? ' active' : '')}
+      className={'item'}
       draggable="true"
     >
       <input value={content} onChange={changeText}></input>
-      <img className="delete" onClick={()=>itemDelete(id)} style={{display:isDelete?"none":''}} src={require("./img/删除.png")}></img>
+      <img className="delete" onClick={()=>itemDelete(id)} style={{display:isDelete||active?"none":''}} src={require("./img/删除.png")}></img>
     </div>
   );
 }
 
 function TaskCol(props) {
+  // 是否是拖拽组件当前所在的目标
   const [isOn, getIson] = useState(false)
+
   console.log(props)
+  //拖拽组件进入当前组件
   function handleDragEnter(e) {
     e.preventDefault();
-    if (props.canDragIn) {
       getIson(true)
-    }
   }
+
+  //拖拽组件离开当前组件
   function handleDragLeave(e) {
     e.preventDefault();
-    if (props.canDragIn) {
       getIson(false)
-    }
   }
+
+  // 拖拽组件放入当前组件中
   function handleDrop(e) {
     e.preventDefault();
     props.dragTo(props.status);
     getIson(false)
   }
+
+  //增加输入框
   function addSign(){
     if(props.status==STATUS_TODO){
       return (
@@ -107,13 +118,13 @@ function TaskCol(props) {
 function App() {
   const [tasks, getTasks] = useState(taskList)
   const [activeId, getActiveId] = useState(null)
-  /**
-   * 传入被拖拽任务项的 id
-   */
+
+ //传入被拖拽任务项的 id
   function onDragStart(id) {
     getActiveId(id)
   }
 
+  //修改状态
   function dragTo(status) {
     let task;
     tasks.forEach((item)=>{
@@ -128,9 +139,12 @@ function App() {
     cancelSelect();
   }
 
+  //拖拽结束时清空id
   function cancelSelect() {
     getActiveId(null)
   }
+
+  //清除输入框
   function itemDelete(id){
     let data=[]
     tasks.forEach((item)=>{
@@ -142,6 +156,8 @@ function App() {
     })
     getTasks(data)
   }
+
+  //新增输入框
   function addInput(){
     let data=[];
     let id=0;
@@ -166,8 +182,8 @@ function App() {
             status={status}
             key={status}
             dragTo={dragTo}
-            addInput={addInput}
-            canDragIn={activeId !== null}>
+            addInput={addInput}>
+              {/* 遍历tasks，是组件当前状态的返回true,生成输入框组件 */}
             {tasks.filter(t => t.status === status).map(t =>
               <TaskItem
                 key={t.id}
